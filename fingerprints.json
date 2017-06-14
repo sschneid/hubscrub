@@ -1,0 +1,7 @@
+{
+    "fingerprints": {
+        "aws_access_key_id": "\\baws[_-]access[_-]key[_-]id\\b.*\\b\\w{20}\\b",
+        "aws_secret_access_key": "\\baws[_-]secret[_-]access[_-]key\\b.*\\b.*\\b[0-9a-zA-Z_\\+\\/]{40}\\b",
+        "rsa private key": "begin rsa private key"
+    }
+}

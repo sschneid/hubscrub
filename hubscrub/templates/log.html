@@ -1,0 +1,25 @@
+{% extends "layout.html" %}
+
+{% block body %}
+
+<div id="log" class="log"></div>
+
+<a id="download-log-link" href="/log/full">
+    <button type="button" class="btn btn-info">download full log</button>
+</a>
+
+<br /><br />
+
+<script type="text/javascript">
+    function fetch_log() {
+        $.getJSON("/api/log", function(data) {
+            $('#log').html("<pre><code>" + data['log'] + "</code></pre>");
+        });
+    }
+
+    fetch_log();
+
+    setInterval(fetch_log, 5000);
+</script>
+
+{% endblock %}

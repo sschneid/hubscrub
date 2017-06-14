@@ -1,0 +1,13 @@
+{% extends "layout.html" %}
+
+{% block body %}
+
+{% if status %}
+    <div class="alert alert-{{ status_type or 'info' }}" role="alert">scanning {{ status }}.</div>
+{% else %}
+    <form action="/scan" method="POST">
+        <button type="submit" id="submit" class="btn btn-success">scan now</button>
+    </form>
+{% endif %}
+
+{% endblock %}

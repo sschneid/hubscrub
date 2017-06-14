@@ -1,0 +1,31 @@
+{% extends "layout.html" %}
+
+{% block body %}
+
+<table class="table table-condensed table-hover" id="vulnerabilitiesTable">
+    <thead>
+        <th>source</th>
+        <th>member</th>
+        <th>matched</th>
+        <th>file</th>
+    </head>
+    <tbody>
+    </tbody>
+</table>
+
+<script type="text/javascript">
+    $.getJSON("/api/vulnerabilities", function(data) {
+        $.each(data['vulnerabilities'], function(id) {
+            var row = '<tr>';
+            $.each(['source', 'member', 'fingerprint'], function(i, v) {
+                row += '<td>' + data['vulnerabilities'][id][v] + '</td>';
+            });
+            row += '<td><a href="/vulnerability/' + data['vulnerabilities'][id]['id'] + '">' + data['vulnerabilities'][id]['filename'] + '</a></td>';
+            row += '</tr>';
+
+            $('#vulnerabilitiesTable > tbody:last').append(row);
+        });
+    });
+</script>
+
+{% endblock %}
