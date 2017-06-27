@@ -1,4 +1,4 @@
-# hubscrub
+# hubscrub [![Build Status](https://travis-ci.org/sschneid/hubscrub.svg?branch=master)](https://travis-ci.org/sschneid/hubscrub)
 
 hubscrub is a whitehat security tool allowing organizations to monitor the public commits and gists of their members and alert when defined patterns are detected.
 
