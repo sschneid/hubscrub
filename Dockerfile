@@ -4,16 +4,15 @@ RUN apt-get update
 RUN apt-get install -y libxmlsec1-dev
 RUN apt-get install -y redis-server
 
+ADD https://github.com/Yelp/dumb-init/releases/download/v1.2.0/dumb-init_1.2.0_amd64 /bin/dumb-init
+
 WORKDIR /opt/hubscrub
 
-COPY requirements.txt /opt/hubscrub/requirements.txt
-RUN pip3 install -r requirements.txt
-
 COPY . /opt/hubscrub
+RUN pip3 install -r requirements.txt \
+    && chmod +x /opt/hubscrub/startup /bin/dumb-init
 
-ENTRYPOINT \
-    /etc/init.d/redis-server start \
-    && cd /opt/hubscrub \
-    && FLASK_APP=hubscrub python -m flask run --host='0.0.0.0' \
-    && while [ ! -f /tmp/hubscrub.log ]; do sleep 1; done; \
-    tail -f /tmp/hubscrub.log
+ENTRYPOINT [ "/bin/dumb-init", "--" ]
+CMD ["/opt/hubscrub/startup"]
+
+EXPOSE 5000

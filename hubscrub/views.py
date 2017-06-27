@@ -72,6 +72,7 @@ def api_log():
 
 @app.route('/scan', methods=['GET', 'POST'])
 def scan():
+    global redis_client
     if authenticated() is False:
         return render_template('login.html')
 
@@ -105,6 +106,7 @@ def show_vulnerability(vulnerability_id):
 
 @app.route('/api/vulnerabilities', methods=['GET'])
 def api_vulnerabilities():
+    global redis_client
     if authenticated() is False:
         return jsonify({'ok': False})
 
@@ -137,6 +139,7 @@ def api_vulnerabilities():
 
 @app.route('/api/vulnerability/<vulnerability_id>', methods=['GET', 'POST'])
 def api_vulnerability(vulnerability_id):
+    global redis_client
     if authenticated() is False:
         return jsonify({'ok': False})
 

@@ -15,6 +15,7 @@ import hubscrub.config as config
 
 app.config['SECRET_KEY'] = md5(config.saml_config.encode('utf-8')).hexdigest()
 
+
 def init_saml_auth(flask_request):
     auth = OneLogin_Saml2_Auth(flask_request, json.loads(config.saml_config))
 

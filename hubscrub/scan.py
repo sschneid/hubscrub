@@ -27,6 +27,7 @@ def get_member_gists(member):
 
 
 def github_commit_scan(member, fingerprints):
+    global redis_client
     try:
         redis_client.ping()
     except:
@@ -117,6 +118,7 @@ def github_commit_scan(member, fingerprints):
 
 
 def github_gist_scan(member, fingerprints):
+    global redis_client
     try:
         redis_client.ping()
     except:
@@ -177,7 +179,7 @@ def github_gist_scan(member, fingerprints):
 
                             if config.slack_token is not None:
                                 try:
-                                    slack_response = hubscrub.slack.alert(
+                                    slack_response = slack_alert(
                                         'gist',
                                         gist['id'][:6],
                                         member,
@@ -201,6 +203,7 @@ def github_gist_scan(member, fingerprints):
 
 
 def github_scan():
+    global redis_client
     try:
         redis_client.ping()
     except:
@@ -235,6 +238,7 @@ def github_scan():
 
 
 def periodic_scan():
+    global redis_client
     while True:
         try:
             redis_client.ping()
@@ -253,6 +257,7 @@ def periodic_scan():
 
 
 def start_periodic_scan():
+    global redis_client
     try:
         redis_client.ping()
     except:
