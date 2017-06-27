@@ -1,0 +1,22 @@
+sudo: required
+language: python
+python:
+  - "3.6"
+
+services:
+  - docker
+
+addons:
+  apt:
+    packages:
+    - libxmlsec1-dev
+
+before_install:
+- docker build -t hubscrub .
+
+before_script:
+- docker run --rm -d -e GITHUB_API_TOKEN=test -e GITHUB_ORGANIZATION=mesosphere --name hubscrub hubscrub
+- sleep 30
+
+script:
+- docker logs hubscrub 2>&1 | grep "failed to check rate limit"
