@@ -1,0 +1,11 @@
+#!/bin/bash
+set -o errexit -o nounset -o pipefail
+
+if [ "${REDIS_HOST:-}" = 'localhost' -o -z "${REDIS_HOST:-}" ]; then
+  /etc/init.d/redis-server start
+fi
+
+cd /opt/hubscrub
+FLASK_APP=hubscrub python -m flask run --host='0.0.0.0' &
+while [ ! -f /tmp/hubscrub.log ]; do sleep 1; done
+exec tail -f /tmp/hubscrub.log

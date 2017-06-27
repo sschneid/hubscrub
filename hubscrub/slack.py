@@ -53,7 +53,6 @@ def slack_post(channel, source, sha, member, filename, fingerprint, link, approv
         )
 
 
-
 def slack_alert(source, sha, member, filename, fingerprint, link):
     return slack_post(config.slack_channel, source, sha, member, filename, fingerprint, link)
 
