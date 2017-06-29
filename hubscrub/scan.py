@@ -7,6 +7,7 @@ from hubscrub import app
 from hubscrub.http import authorized_request, authorized_request_following_links, authorized_request_raw
 from hubscrub.redis import init_redis_client
 from hubscrub.slack import slack_alert
+from hubscrub.pagerduty import pagerduty_alert
 
 import hubscrub.config as config
 
@@ -92,6 +93,11 @@ def github_commit_scan(member, fingerprints):
                                         })
                                         redis_client.expire(vuln_id, int(config.vuln_ttl))
 
+                                        pagerduty_alert('{} leaked {} - {}/vulnerability/{}'.format(member, to_match,
+                                                                                                    config.hubscrub_url,
+                                                                                                    vuln_id),
+                                                        dedup_key=vuln_id)
+
                                         if config.slack_token is not None:
                                             try:
                                                 slack_response = slack_alert(
@@ -176,6 +182,10 @@ def github_gist_scan(member, fingerprints):
                                  'link': gist['html_url']
                             })
                             redis_client.expire(vuln_id, int(config.vuln_ttl))
+
+                            pagerduty_alert(
+                                '{} leaked {} - {}/vulnerability/{}'.format(member, to_match, config.hubscrub_url,
+                                                                            vuln_id), dedup_key=vuln_id)
 
                             if config.slack_token is not None:
                                 try:
