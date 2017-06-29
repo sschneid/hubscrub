@@ -21,3 +21,5 @@ polling_interval = os.getenv('HUBSCRUB_POLLING_INTERVAL', 3600)
 
 scan_ttl = os.getenv('HUBSCRUB_SCAN_TTL', 1800)
 vuln_ttl = os.getenv('HUBSCRUB_VULNERABILITY_TTL', 2592000)
+
+pagerduty_service_key = os.getenv('PAGERDUTY_SERVICE_KEY', None)
