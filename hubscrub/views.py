@@ -1,9 +1,10 @@
 from collections import deque
 from threading import Thread
 
+from time import time
 from flask import jsonify, render_template, request, send_file, session
 
-from hubscrub import app
+from hubscrub import app, health
 from hubscrub.redis import init_redis_client
 from hubscrub.scan import github_scan
 from hubscrub.slack import slack_approve
@@ -185,3 +186,8 @@ def api_vulnerability(vulnerability_id):
             return jsonify(vulnerability)
     else:
         return jsonify({'ok': False})
+
+
+@app.route('/api/health', methods=['GET'])
+def api_health():
+    return jsonify({'now': time(), **health})
