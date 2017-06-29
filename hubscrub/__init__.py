@@ -1,10 +1,15 @@
 from threading import Thread
+from time import time
 import logging
 
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.DEBUG)
 logger.propagate = False
 formatter = logging.Formatter('[%(asctime)s] %(message)s')
+
+# dict that gets rendered out at /api/health
+# fetch/store on global dicts is thread safe due to GIL
+health = {'startup': time()}
 
 fh = logging.FileHandler('/tmp/hubscrub.log', 'w')
 fh.setLevel(logging.DEBUG)

@@ -3,7 +3,7 @@ import re
 from time import sleep, time
 from threading import Thread
 
-from hubscrub import app
+from hubscrub import app, health
 from hubscrub.http import authorized_request, authorized_request_following_links, authorized_request_raw
 from hubscrub.redis import init_redis_client
 from hubscrub.slack import slack_alert
@@ -214,6 +214,7 @@ def github_gist_scan(member, fingerprints):
 
 def github_scan():
     global redis_client
+    health['scan_start'] = time()
     try:
         redis_client.ping()
     except:
@@ -250,6 +251,7 @@ def github_scan():
 def periodic_scan():
     global redis_client
     while True:
+        health['scan_event_loop'] = time()
         try:
             redis_client.ping()
         except:
