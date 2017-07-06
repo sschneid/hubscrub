@@ -23,7 +23,7 @@ app = Flask(__name__)
 
 app.logger.addHandler(fh)
 
-from hubscrub.scan import start_periodic_scan
-start_periodic_scan()
+from hubscrub.scan import start_periodic_scans
+start_periodic_scans()
 
 import hubscrub.views

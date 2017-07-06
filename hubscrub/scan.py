@@ -7,7 +7,6 @@ from hubscrub import app, health
 from hubscrub.http import authorized_request, authorized_request_following_links, authorized_request_raw
 from hubscrub.redis import init_redis_client
 from hubscrub.slack import slack_alert
-from hubscrub.pagerduty import pagerduty_alert
 
 import hubscrub.config as config
 
@@ -92,11 +91,6 @@ def github_commit_scan(member, fingerprints):
                                             'link': commit['html_url']
                                         })
                                         redis_client.expire(vuln_id, int(config.vuln_ttl))
-
-                                        pagerduty_alert('{} leaked {} - {}/vulnerability/{}'.format(member, to_match,
-                                                                                                    config.hubscrub_url,
-                                                                                                    vuln_id),
-                                                        dedup_key=vuln_id)
 
                                         if config.slack_token is not None:
                                             try:
@@ -183,10 +177,6 @@ def github_gist_scan(member, fingerprints):
                             })
                             redis_client.expire(vuln_id, int(config.vuln_ttl))
 
-                            pagerduty_alert(
-                                '{} leaked {} - {}/vulnerability/{}'.format(member, to_match, config.hubscrub_url,
-                                                                            vuln_id), dedup_key=vuln_id)
-
                             if config.slack_token is not None:
                                 try:
                                     slack_response = slack_alert(
@@ -268,7 +258,7 @@ def periodic_scan():
         sleep(int(config.polling_interval))
 
 
-def start_periodic_scan():
+def start_periodic_scans():
     global redis_client
     try:
         redis_client.ping()
@@ -280,3 +270,12 @@ def start_periodic_scan():
     polling_thread = Thread(target=periodic_scan, args=())
     polling_thread.daemon = True
     polling_thread.start()
+
+    if config.pagerduty_service_key is not None:
+        import hubscrub.pagerduty as pagerduty
+
+        redis_client.delete('pagerduty_scan_in_progress')
+
+        pagerduty_polling_thread = Thread(target=pagerduty.periodic_scan, args=())
+        pagerduty_polling_thread.daemon = True
+        pagerduty_polling_thread.start()
