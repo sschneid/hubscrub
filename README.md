@@ -7,7 +7,7 @@ hubscrub is a whitehat security tool allowing organizations to monitor the publi
 - simple "approve and remove from dashboard" auditing workflow
 - percentage-based github rate-limit adherence
 - unlimited organization size, can specify multiple organizations
-- optional notifcations via [slack](https://slack.com)
+- optional notifcations via [slack](https://slack.com) and [pagerduty](https://pagerduty.com/)
 - optional saml handshake authentication
 
 # docker quickstart
@@ -43,6 +43,8 @@ also passed to docker via `-e` or `--env-file`:
 | `REDIS_PORT` | port redis is listening on | `6379` |
 | `SLACK_API_TOKEN` | a slack api token | `None` |
 | `SLACK_CHANNEL` | which slack channel to post alerts to | `#hubscrub` |
+| `PAGERDUTY_SERVICE_KEY` | a pagerduty api service key | `None` |
+| `PAGERDUTY_ALERT_INTERVAL` | how long before paging on unacknowledged vulnerabilities | `3600` |
 | `SAML_CONFIG` | a [saml configuration](https://github.com/onelogin/python3-saml#settings) json blob | `None` |
 
 # fingerprints.json
