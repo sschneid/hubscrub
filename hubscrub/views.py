@@ -153,7 +153,10 @@ def api_vulnerability(vulnerability_id):
 
     if vulnerability:
         if request.method == 'POST':
-            if redis_client.hset(vulnerability_id, 'approved', 'true'):
+            if redis_client.hmset(vulnerability_id, {
+                'approved': 'true',
+                'approved_on': time()
+            }):
                 approver = None
                 if authenticated() is True:
                     approver = session['samlUserdata'].get(config.saml_approver_key)
