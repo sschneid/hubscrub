@@ -10,6 +10,18 @@ hubscrub is a whitehat security tool allowing organizations to monitor the publi
 - optional notifcations via [slack](https://slack.com) and [pagerduty](https://pagerduty.com/)
 - optional saml handshake authentication
 
+# requirements
+
+`libxml2`, `libxmlsec1-dev`, and `pkg-config` are all library prerequisites for hubscrub.
+
+## osx (mac)
+
+install via brew:
+
+```
+brew install libxml2 libxmlsec1 pkg-config
+```
+
 # docker quickstart
 
 ```
