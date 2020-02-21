@@ -1,11 +1,11 @@
-from slackclient import SlackClient
+import slack
 from time import asctime
 
 import hubscrub.config as config
 
 
 def init_slack_client():
-    slack_client = SlackClient(config.slack_token)
+    slack_client = slack(config.slack_token)
 
     return slack_client
 
